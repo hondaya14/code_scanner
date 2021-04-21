@@ -1,0 +1,29 @@
+PODS:
+  - code_scanner (0.0.1):
+    - Flutter
+    - MTBBarcodeScanner
+  - Flutter (1.0.0)
+  - MTBBarcodeScanner (5.0.11)
+
+DEPENDENCIES:
+  - code_scanner (from `.symlinks/plugins/code_scanner/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - MTBBarcodeScanner
+
+EXTERNAL SOURCES:
+  code_scanner:
+    :path: ".symlinks/plugins/code_scanner/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  code_scanner: 70a721415d083d1bf4b25bed2b2dc7572d91680f
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.8.4

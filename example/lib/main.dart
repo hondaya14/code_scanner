@@ -1,56 +1,83 @@
-import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:code_scanner/code_scanner.dart';
+import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(CodeScannerExample());
 }
 
-class MyApp extends StatefulWidget {
+class CodeScannerExample extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _CodeScannerExampleState createState() => _CodeScannerExampleState();
 }
 
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
+class _CodeScannerExampleState extends State<CodeScannerExample> {
+  CodeScannerController controller;
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    this.controller = CodeScannerController();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await CodeScanner.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    controller?.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            CodeScanner(
+              controller: controller,
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 400),
+              padding: const EdgeInsets.all(5.0),
+              width: 300,
+              decoration: BoxDecoration(
+                color: Color(0xcc222222),
+                border: Border.all(color: Color(0xcc222222)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: StreamBuilder<String>(
+                stream: controller.scanDataStream,
+                builder: (context, snapshot) {
+                  return Text(
+                    'Data: ${snapshot.data}',
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 500),
+              padding: const EdgeInsets.all(5.0),
+              width: 300,
+              decoration: BoxDecoration(
+                color: Color(0xcc222222),
+                border: Border.all(color: Color(0xcc222222)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Scan code',
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 600),
+              child: FloatingActionButton(
+                child: Icon(Icons.lightbulb_outline),
+                backgroundColor: Color(0xcc222222),
+                onPressed: null,
+              ),
+            ),
+          ],
         ),
       ),
     );

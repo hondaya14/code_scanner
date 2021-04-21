@@ -9,12 +9,13 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 code scanner plugin.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/hondaya14/code_scanner'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Your Company' => 'nqvno14@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
+  s.dependency 'MTBBarcodeScanner'
   s.platform = :ios, '8.0'
 
   # Flutter.framework does not contain a i386 slice.
