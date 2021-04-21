@@ -7,8 +7,8 @@ QR code scanner plugin for flutter.
 ### iOS
 Please add as follows in <code>info.plist</code>
 ```
-  <key>NSCameraUsageDescription</key>
-	<string></string>
-  <key>io.flutter.embedded_views_preview</key>
-	<true/>
+<key>NSCameraUsageDescription</key>
+<string></string>
+<key>io.flutter.embedded_views_preview</key>
+<true/>
 ```
