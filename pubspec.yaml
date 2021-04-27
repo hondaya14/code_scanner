@@ -1,8 +1,8 @@
 name: code_scanner
 description: code scanner plugin.
 version: 0.0.1
-author:
-homepage:
+author: "Yasuhisa HONDA"
+homepage: ""
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
