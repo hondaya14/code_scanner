@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: Flutter
 
 SPEC CHECKSUMS:
-  code_scanner: 70a721415d083d1bf4b25bed2b2dc7572d91680f
+  code_scanner: dad3a22b1e6881349f25fbb81523ec5cc0e4b059
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
 
