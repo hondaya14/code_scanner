@@ -13,6 +13,11 @@ Please add as follows in <code>info.plist</code>
 <true/>
 ```
 
+### Android
+```
+minSdkVersion 24
+```
+
 ## Dependent library
 iOS:  [MTBBarcodeScanner](https://github.com/mikebuss/MTBBarcodeScanner)
 <br>

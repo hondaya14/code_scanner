@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'exception.dart';
@@ -16,10 +17,10 @@ class CodeScanner extends StatefulWidget {
   final CodeScannerController controller;
 
   /// [CodeScanner] screen width. default value is device width.
-  final width;
+  final int width;
 
   /// [CodeScanner] screen width. default value is device height.
-  final height;
+  final int height;
 
   @override
   State<StatefulWidget> createState() => _CodeScannerState();
@@ -28,22 +29,38 @@ class CodeScanner extends StatefulWidget {
 ///
 class _CodeScannerState extends State<CodeScanner> {
   static const MethodChannel _channel = const MethodChannel('code_scanner');
-  String scanData = 'null';
+  String scanData = '';
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final width = widget.width ?? size.width;
-    final height = widget.height ?? size.height;
-    return UiKitView(
-      viewType: 'code_scanner_view',
-      onPlatformViewCreated: startScan,
-      creationParams: {
-        'width': width,
-        'height': height,
-      },
-      creationParamsCodec: const StandardMessageCodec(),
-    );
+    final ratio = MediaQuery.of(context).devicePixelRatio;
+    final width = widget.width ?? size.width.toInt();
+    final height = widget.height ?? size.height.toInt();
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return AndroidView(
+          viewType: 'code_scanner_view',
+          onPlatformViewCreated: startScan,
+          creationParams: {
+            'width': width,
+            'height': height,
+          },
+          creationParamsCodec: const StandardMessageCodec(),
+        );
+      case TargetPlatform.iOS:
+        return UiKitView(
+          viewType: 'code_scanner_view',
+          onPlatformViewCreated: startScan,
+          creationParams: {
+            'width': width,
+            'height': height,
+          },
+          creationParamsCodec: const StandardMessageCodec(),
+        );
+      default:
+        throw UnsupportedError('Unsupport platform');
+    }
   }
 
   /// Start scan code.
