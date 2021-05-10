@@ -21,7 +21,7 @@ minSdkVersion 24
 ## Dependent library
 iOS:  [MTBBarcodeScanner](https://github.com/mikebuss/MTBBarcodeScanner)
 <br>
-Android:  [ZXing](https://github.com/zxing/zxing)
+Android:  [zxing-android-embedded](https://github.com/journeyapps/zxing-android-embedded)
 
 
 ## How to use
