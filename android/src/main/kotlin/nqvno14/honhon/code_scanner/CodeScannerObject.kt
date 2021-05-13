@@ -5,5 +5,5 @@ import io.flutter.plugin.common.PluginRegistry
 
 object CodeScannerObject {
   var activity : Activity? = null
-//  var registrar : PluginRegistry.Registrar? = null
+  const val CAMERA_REQUEST_CODE = 200
 }

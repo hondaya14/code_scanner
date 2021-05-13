@@ -4,7 +4,6 @@ package nqvno14.honhon.code_scanner
 import android.Manifest
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Bundle
@@ -21,14 +20,13 @@ class CodeScannerView (messenger: BinaryMessenger?, args: HashMap<String, Any>)
     private val channel: MethodChannel = MethodChannel(messenger, "code_scanner")
     private var isFlash: Boolean = false
     private var isPaused: Boolean = false
-//    private var pm: PackageManager
 
 
     init {
         channel.setMethodCallHandler(this)
         CodeScannerObject.activity?.application?.registerActivityLifecycleCallbacks( object : Application.ActivityLifecycleCallbacks{
             override fun onActivityPaused(act: Activity) {
-                if (act == CodeScannerObject.activity && !isPaused){
+                if (act == CodeScannerObject.activity && !isPaused && isCameraPermissionGranted()){
                     scanner?.pause()
                 }
             }
@@ -49,7 +47,7 @@ class CodeScannerView (messenger: BinaryMessenger?, args: HashMap<String, Any>)
             }
 
             override fun onActivityResumed(act: Activity) {
-                if (act == CodeScannerObject.activity && !isPaused){
+                if (act == CodeScannerObject.activity && !isPaused && isCameraPermissionGranted()){
                     scanner?.resume()
                 }
             }
@@ -67,15 +65,25 @@ class CodeScannerView (messenger: BinaryMessenger?, args: HashMap<String, Any>)
     }
 
     override fun getView(): BarcodeView? {
+        return initCodeScannerView().apply { }
+    }
+
+    private fun initCodeScannerView(): BarcodeView?{
         if(scanner==null){
             scanner = BarcodeView(CodeScannerObject.activity)
             scanner?.cameraSettings?.requestedCameraId = Camera.CameraInfo.CAMERA_FACING_BACK
 
         }else{
-            scanner!!.resume()
+            if(isCameraPermissionGranted()) {
+                if(!isPaused) scanner!!.resume()
+            }else{
+                requestCameraPermission()
+            }
         }
+
         return scanner
     }
+
 
     override fun dispose() {
         scanner?.pause()
@@ -84,36 +92,51 @@ class CodeScannerView (messenger: BinaryMessenger?, args: HashMap<String, Any>)
 
 
     private fun startScan(result: MethodChannel.Result){
-        if(CodeScannerObject.activity?.checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED) {
+        if(isCameraPermissionGranted()) {
             scanner?.decodeContinuous { scanData ->
                 channel.invokeMethod("receiveScanData", scanData.text)
             }
-        }else{
-            result.error("PERMISSION_DENIED", "Camera permission denied.","")
         }
-
+//        else {
+//            result.error("PERMISSION_DENIED", "Camera permission denied.", "")
+//        }
     }
 
   private fun turnOnLight(result: MethodChannel.Result){
-
-      scanner?.setTorch(true)
-      result.success(true)
-      result.error("NOT_HAS_LIGHT","Light is not available.","")
+      if(CodeScannerObject.activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+          scanner?.setTorch(true)
+          result.success(true)
+      }else {
+          result.error("NOT_HAS_LIGHT", "Light is not available.", "")
+      }
   }
 
   private fun turnOffLight(result: MethodChannel.Result){
-      scanner?.setTorch(false)
-      result.success(false)
-      result.error("NOT_HAS_LIGHT","Light is not available.","")
+      if(CodeScannerObject.activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+          scanner?.setTorch(false)
+          result.success(false)
+      }else {
+          result.error("NOT_HAS_LIGHT", "Light is not available.", "")
+      }
   }
 
   private fun toggleLight(result: MethodChannel.Result){
-
-      isFlash = !isFlash
-      scanner?.setTorch(isFlash)
-      result.success(isFlash)
-      result.error("NOT_HAS_LIGHT","Light is not available.","")
+      if(CodeScannerObject.activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)){
+          isFlash = !isFlash
+          scanner?.setTorch(isFlash)
+          result.success(isFlash)
+      }else {
+          result.error("NOT_HAS_LIGHT", "Light is not available.", "")
+      }
   }
+
+    private fun isCameraPermissionGranted(): Boolean {
+        return CodeScannerObject.activity?.checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        CodeScannerObject.activity?.requestPermissions(arrayOf(Manifest.permission.CAMERA), CodeScannerObject.CAMERA_REQUEST_CODE)
+    }
 
 }
 
