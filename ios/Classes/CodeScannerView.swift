@@ -12,6 +12,7 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
     
     public init(withFrame frame: CGRect, viewIdentifier viewId: Int64, withRegistrar registrar: FlutterPluginRegistrar) {
         self.previewView = UIView(frame: frame)
+        self.previewView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.registrar = registrar
         self.scanner = MTBBarcodeScanner(previewView: previewView)
         self.channel = FlutterMethodChannel(name: "code_scanner", binaryMessenger: registrar.messenger())

@@ -9,18 +9,10 @@ import 'exception.dart';
 class CodeScanner extends StatefulWidget {
   const CodeScanner({
     @required this.controller,
-    this.width,
-    this.height,
   });
 
   /// CodeScanner needs [CodeScannerController] instance.
   final CodeScannerController controller;
-
-  /// [CodeScanner] screen width. default value is device width.
-  final int width;
-
-  /// [CodeScanner] screen width. default value is device height.
-  final int height;
 
   @override
   State<StatefulWidget> createState() => _CodeScannerState();
@@ -33,29 +25,19 @@ class _CodeScannerState extends State<CodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final ratio = MediaQuery.of(context).devicePixelRatio;
-    final width = widget.width ?? size.width.toInt();
-    final height = widget.height ?? size.height.toInt();
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return AndroidView(
           viewType: 'code_scanner_view',
           onPlatformViewCreated: startScan,
-          creationParams: {
-            'width': width,
-            'height': height,
-          },
+          creationParams: {},
           creationParamsCodec: const StandardMessageCodec(),
         );
       case TargetPlatform.iOS:
         return UiKitView(
           viewType: 'code_scanner_view',
           onPlatformViewCreated: startScan,
-          creationParams: {
-            'width': width,
-            'height': height,
-          },
+          creationParams: {},
           creationParamsCodec: const StandardMessageCodec(),
         );
       default:

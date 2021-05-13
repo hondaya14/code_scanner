@@ -13,15 +13,4 @@ public class SwiftCodeScannerPlugin: NSObject, FlutterPlugin {
         registrar.register(factory, withId: "code_scanner_view")
     }
 
-    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        switch call.method {
-        case "getPlatformVersion":
-            result("iOS : " + UIDevice.current.systemVersion)
-        case "scanner_start":
-            result("")
-        default:
-            result(FlutterMethodNotImplemented)
-            return
-        }
-    }
 }
