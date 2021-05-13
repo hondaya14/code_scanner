@@ -1,6 +1,6 @@
 # code_scanner
 
-QR code scanner plugin for flutter.
+QR code scanner plugin for flutter. This plugin responds to camera usage permission requests.
 
 ## Getting Started
 
