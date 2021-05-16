@@ -1,6 +1,7 @@
 # code_scanner
 
-QR code scanner plugin for flutter. This plugin responds to camera usage permission requests.
+QR code scanner plugin for flutter. This plugin responds to camera/photo-lirary usage permission requests.
+This plugin function is Scan/Read. "Scan" is scanning QR code by scanner, "Read" is reading qr code by picking up qr code image from photo library.
 
 ## Getting Started
 
@@ -8,6 +9,8 @@ QR code scanner plugin for flutter. This plugin responds to camera usage permiss
 Please add as follows in <code>info.plist</code>
 ```
 <key>NSCameraUsageDescription</key>
+<string></string>
+<key>NSPhotoLibraryUsageDescription</key>
 <string></string>
 <key>io.flutter.embedded_views_preview</key>
 <true/>
@@ -35,12 +38,28 @@ CodeScanner(
 /// Widget Controller
 controller = CodeScannerController();
 ```
-### How to get scanData
+## How to get scan/read data
+### How to get scan data
 Listern for scanDataStream.
 ```dart
+/// scan data
 controller.scanDataStream
 ```
+### How to get read data
+If reading qr image from photo gallery is success, true value flows through isSuccessReadDataStream. 
+If reading qr image from photo gallery is failure, false value flows through isSuccessReadDataStream.
+```dart
+/// flag of successful read
+controller.isSuccessReadDataStream
+
+/// read data
+controller.readDataStream
+```
 ### Method
+#### Read code from image gallery
+```dart
+await controller.readDataFromGallery();
+```
 #### Turn on light
 ```dart
 await controller.lightON();
