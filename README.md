@@ -46,8 +46,9 @@ Listern for scanDataStream.
 controller.scanDataStream
 ```
 ### How to get read data
-If reading qr image from photo gallery is success, true value flows through isSuccessReadDataStream. 
-If reading qr image from photo gallery is failure, false value flows through isSuccessReadDataStream.
+If reading qr image from photo gallery is success, true value flows through isSuccessReadDataStream.  
+If reading qr image from photo gallery is failure, false value flows through isSuccessReadDataStream.  
+You can detect read result without isSuccessReadDataStream. You Listen for only readDataStream, it is flowed two value pattern, one is actual read data, another is null when reading is failure
 ```dart
 /// flag of successful read
 controller.isSuccessReadDataStream
