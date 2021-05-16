@@ -9,6 +9,7 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
     var scanner: MTBBarcodeScanner?
     var registrar: FlutterPluginRegistrar
     var channel: FlutterMethodChannel
+    var reader: CodeReader
     
     public init(withFrame frame: CGRect, viewIdentifier viewId: Int64, withRegistrar registrar: FlutterPluginRegistrar) {
         self.previewView = UIView(frame: frame)
@@ -16,6 +17,7 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
         self.registrar = registrar
         self.scanner = MTBBarcodeScanner(previewView: previewView)
         self.channel = FlutterMethodChannel(name: "code_scanner", binaryMessenger: registrar.messenger())
+        self.reader = CodeReader.init(channel: self.channel)
     }
     
     public func view() -> UIView {
@@ -31,6 +33,8 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
                 self.turnOffLight(result: result)
             case "toggleLight":
                 self.toggleLight(result: result)
+            case "readDataFromGallery":
+                self.reader.getImage(result: result)
             default:
                 result(FlutterMethodNotImplemented)
                 return

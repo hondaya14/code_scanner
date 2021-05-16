@@ -18,7 +18,7 @@ class CodeScannerViewFactory: NSObject, FlutterPlatformViewFactory {
     }
     
     func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-        var dict = args as! Dictionary<String, Double>
+//        var dict = args as! Dictionary<String, Double>
         return CodeScannerView(withFrame: frame, viewIdentifier: viewId, withRegistrar: registrar!)
     }
     
