@@ -71,6 +71,28 @@ class CodeScannerController {
                 _scanDataStreamController.sink.add(receivedData.toString());
               }
             }
+            break;
+          case 'receiveReadData':
+            final receivedData = call.arguments;
+            final isSuccess = receivedData[0];
+            final readData = receivedData[1];
+            if (receivedData != null) {
+              if (isSuccess || _isSuccessReadDataStreamController.hasListener) {
+                _isSuccessReadDataStreamController.sink.add(isSuccess);
+                if (_readDataStreamController.hasListener) {
+                  _readDataStreamController.sink.add(readData);
+                }
+              } else {
+                if (_isSuccessReadDataStreamController.hasListener) {
+                  _isSuccessReadDataStreamController.sink.add(isSuccess);
+                }
+              }
+            } else {
+              if (_isSuccessReadDataStreamController.hasListener) {
+                _isSuccessReadDataStreamController.sink.add(isSuccess);
+              }
+            }
+            break;
         }
       },
     );
@@ -79,11 +101,26 @@ class CodeScannerController {
   StreamController<String> _scanDataStreamController =
       StreamController<String>();
 
+  StreamController<bool> _isSuccessReadDataStreamController =
+      StreamController<bool>();
+
+  StreamController<String> _readDataStreamController =
+      StreamController<String>();
+
   /// Listen for [scanDataStream] to get scan data.
   Stream<String> get scanDataStream => _scanDataStreamController.stream;
 
+  /// Listen for [isSuccessReadDataStream] to confirm to be able to get read data.
+  Stream<bool> get isSuccessReadDataStream =>
+      _isSuccessReadDataStreamController.stream;
+
+  /// Listen for [readDataStream] to get read data.
+  Stream<String> get readDataStream => _readDataStreamController.stream;
+
   void dispose() {
     _scanDataStreamController.close();
+    _isSuccessReadDataStreamController.close();
+    _readDataStreamController.close();
   }
 
   /// turn on light
@@ -109,6 +146,14 @@ class CodeScannerController {
   Future<void> toggleLight() async {
     try {
       await _channel.invokeMethod('toggleLight');
+    } on PlatformException catch (e) {
+      throw CodeScannerException(e.code, e.message);
+    }
+  }
+
+  Future<void> readDataFromGallery() async {
+    try {
+      await _channel.invokeMethod('readDataFromGallery');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }

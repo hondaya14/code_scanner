@@ -69,15 +69,30 @@ class _CodeScannerExampleState extends State<CodeScannerExample> {
                 },
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 600),
-              child: FloatingActionButton(
-                child: Icon(Icons.lightbulb_outline),
-                backgroundColor: Color(0xcc222222),
-                onPressed: () async {
-                  await controller.toggleLight();
-                },
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 600),
+                  child: FloatingActionButton(
+                    child: Icon(Icons.lightbulb_outline),
+                    backgroundColor: Color(0xcc222222),
+                    onPressed: () async {
+                      await controller.toggleLight();
+                    },
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 600),
+                  child: FloatingActionButton(
+                    child: Icon(Icons.photo_library),
+                    backgroundColor: Color(0xcc222222),
+                    onPressed: () async {
+                      await controller.readDataFromGallery();
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
