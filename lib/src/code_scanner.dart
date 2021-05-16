@@ -86,10 +86,16 @@ class CodeScannerController {
                 if (_isSuccessReadDataStreamController.hasListener) {
                   _isSuccessReadDataStreamController.sink.add(isSuccess);
                 }
+                if (_readDataStreamController.hasListener) {
+                  _readDataStreamController.sink.add(null);
+                }
               }
             } else {
               if (_isSuccessReadDataStreamController.hasListener) {
                 _isSuccessReadDataStreamController.sink.add(isSuccess);
+              }
+              if (_readDataStreamController.hasListener) {
+                _readDataStreamController.sink.add(null);
               }
             }
             break;
@@ -99,13 +105,13 @@ class CodeScannerController {
   }
 
   StreamController<String> _scanDataStreamController =
-      StreamController<String>();
+      StreamController<String>.broadcast();
 
   StreamController<bool> _isSuccessReadDataStreamController =
-      StreamController<bool>();
+      StreamController<bool>.broadcast();
 
   StreamController<String> _readDataStreamController =
-      StreamController<String>();
+      StreamController<String>.broadcast();
 
   /// Listen for [scanDataStream] to get scan data.
   Stream<String> get scanDataStream => _scanDataStreamController.stream;
