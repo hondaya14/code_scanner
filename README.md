@@ -18,7 +18,14 @@ Please add as follows in <code>info.plist</code>
 
 ### Android
 ```
-minSdkVersion 24
+minSdkVersion 23
+```
+Please add as follows in <code>Manifest.xml</code>
+```xml
+<manifest ... xmlns:tools="http://schemas.android.com/tools">
+                    :
+  <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+</manifest>
 ```
 
 ## Dependent library
