@@ -6,6 +6,7 @@ This plugin function is Scan/Read. "Scan" is scanning QR code by scanner, "Read"
 ## Getting Started
 
 ### iOS
+Support for iOS > 8.0  
 Please add as follows in <code>info.plist</code>
 ```
 <key>NSCameraUsageDescription</key>
