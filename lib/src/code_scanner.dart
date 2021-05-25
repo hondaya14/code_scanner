@@ -21,7 +21,6 @@ class CodeScanner extends StatefulWidget {
 ///
 class _CodeScannerState extends State<CodeScanner> {
   static const MethodChannel _channel = const MethodChannel('code_scanner');
-  String scanData = '';
 
   @override
   Widget build(BuildContext context) {
@@ -76,32 +75,23 @@ class CodeScannerController {
             final receivedData = call.arguments;
             final isSuccess = receivedData[0];
             final readData = receivedData[1];
-            if (receivedData != null) {
-              if (isSuccess || _isSuccessReadDataStreamController.hasListener) {
-                _isSuccessReadDataStreamController.sink.add(isSuccess);
-                if (_readDataStreamController.hasListener) {
-                  _readDataStreamController.sink.add(readData);
-                }
-              } else {
-                if (_isSuccessReadDataStreamController.hasListener) {
-                  _isSuccessReadDataStreamController.sink.add(isSuccess);
-                }
-                if (_readDataStreamController.hasListener) {
-                  _readDataStreamController.sink.add(null);
-                }
-              }
-            } else {
-              if (_isSuccessReadDataStreamController.hasListener) {
-                _isSuccessReadDataStreamController.sink.add(isSuccess);
-              }
-              if (_readDataStreamController.hasListener) {
-                _readDataStreamController.sink.add(null);
-              }
+            if (isSuccess) {
+              streamData(_isSuccessReadDataStreamController, isSuccess);
+              streamData(_readDataStreamController, readData);
+              break;
             }
+            streamData(_isSuccessReadDataStreamController, false);
+            streamData(_readDataStreamController, null);
             break;
         }
       },
     );
+  }
+
+  void streamData(StreamController sc, dynamic value) {
+    if (sc.hasListener) {
+      sc.sink.add(value);
+    }
   }
 
   StreamController<String> _scanDataStreamController =

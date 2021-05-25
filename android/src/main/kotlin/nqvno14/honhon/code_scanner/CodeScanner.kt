@@ -93,9 +93,15 @@ class CodeScannerView(messenger: BinaryMessenger?, args: HashMap<String, Any>)
 
     private fun startScan(result: MethodChannel.Result) {
         if (isCameraPermissionGranted()) {
-            scanner?.decodeContinuous { scanData ->
-                CodeScannerObject.channel?.invokeMethod("receiveScanData", scanData.text)
+            try {
+                scanner?.decodeContinuous { scanData ->
+                    CodeScannerObject.channel?.invokeMethod("receiveScanData", scanData.text)
+                }
+            } catch (e: Exception) {
+                result.error("UNKNOWN", "Unable to start scanning.", "")
             }
+        } else {
+            result.error("PERMISSION_DENIED", "Camera permission denied.", "")
         }
     }
 

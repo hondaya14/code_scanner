@@ -114,7 +114,6 @@ class CodeReader: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     func sendReadData(channel: FlutterMethodChannel, readData: String){
-        print(readData)
         channel.invokeMethod("receiveReadData", arguments: [readData != "", readData])
     }
     

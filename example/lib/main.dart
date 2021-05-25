@@ -78,28 +78,21 @@ class _CodeScannerExampleState extends State<CodeScannerExample> {
                 border: Border.all(color: Color(0xcc222222)),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: StreamBuilder<bool>(
-                stream: controller.isSuccessReadDataStream,
-                initialData: true,
-                builder: (context, snapshot) {
-                  return (snapshot.data)
-                      ? StreamBuilder<String>(
-                          stream: controller.readDataStream,
-                          builder: (context, snapshot) {
-                            return Text(
-                              'Read Data: ${snapshot.data}',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                              textAlign: TextAlign.center,
-                            );
-                          })
-                      : Text(
-                          'Read Failure',
-                          style: TextStyle(color: Colors.white, fontSize: 17),
-                          textAlign: TextAlign.center,
-                        );
-                },
-              ),
+              child: StreamBuilder<String>(
+                  stream: controller.readDataStream,
+                  builder: (context, snapshot) {
+                    return (snapshot.hasData)
+                        ? Text(
+                            'Read Data: ${snapshot.data}',
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                            textAlign: TextAlign.center,
+                          )
+                        : Text(
+                            'Read Failure',
+                            style: TextStyle(color: Colors.white, fontSize: 17),
+                            textAlign: TextAlign.center,
+                          );
+                  }),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
