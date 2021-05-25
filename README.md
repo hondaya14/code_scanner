@@ -1,4 +1,4 @@
-# code_scanner
+# code_scanner_and_reader
 
 QR code scanner plugin for flutter. This plugin responds to camera/photo-lirary usage permission requests.
 This plugin function is Scan/Read. "Scan" is scanning QR code by scanner, "Read" is reading qr code by picking up qr code image from photo library.
