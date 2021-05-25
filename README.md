@@ -6,6 +6,7 @@ This plugin function is Scan/Read. "Scan" is scanning QR code by scanner, "Read"
 ## Getting Started
 
 ### iOS
+Support for iOS > 8.0  
 Please add as follows in <code>info.plist</code>
 ```
 <key>NSCameraUsageDescription</key>
@@ -18,7 +19,14 @@ Please add as follows in <code>info.plist</code>
 
 ### Android
 ```
-minSdkVersion 24
+minSdkVersion 23
+```
+Please add as follows in <code>Manifest.xml</code>
+```xml
+<manifest ... xmlns:tools="http://schemas.android.com/tools">
+                    :
+  <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+</manifest>
 ```
 
 ## Dependent library
