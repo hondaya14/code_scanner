@@ -1,7 +1,7 @@
 name: code_scanner
 description: scanning qr code by camera & reading from qr code garrely image.
-version: 0.0.1
-homepage: "https://github.com/hondaya14/code_scanner_and_reader"
+version: 0.0.2
+homepage: "https://github.com/hondaya14/code_scanner"
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
