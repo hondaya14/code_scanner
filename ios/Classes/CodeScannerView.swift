@@ -27,6 +27,8 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
             switch(call.method){
             case "startScan":
                 self.startScan(result: result)
+            case "stopScan":
+                self.stopScan(result: result)
             case "turnOnLight":
                 self.turnOnLight(result: result)
             case "turnOffLight":
@@ -94,4 +96,9 @@ public class CodeScannerView: NSObject, FlutterPlatformView {
             result(FlutterError(code: "NOT_HAS_LIGHT", message: "Light is not available.", details: ""))
         }
     }
+    
+    func stopScan(result: @escaping FlutterResult){
+        self.scanner?.stopScanning()
+    }
+    
 }

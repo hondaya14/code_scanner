@@ -56,6 +56,7 @@ class CodeScannerView(messenger: BinaryMessenger?, args: HashMap<String, Any>)
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "startScan" -> startScan(result)
+            "stopScan" -> stopScan(result)
             "turnOnLight" -> turnOnLight(result)
             "turnOffLight" -> turnOffLight(result)
             "toggleLight" -> toggleLight(result)
@@ -103,6 +104,10 @@ class CodeScannerView(messenger: BinaryMessenger?, args: HashMap<String, Any>)
         } else {
             result.error("PERMISSION_DENIED", "Camera permission denied.", "")
         }
+    }
+
+    private fun stopScan(result: MethodChannel.Result){
+        scanner?.stopDecoding()
     }
 
     private fun turnOnLight(result: MethodChannel.Result) {

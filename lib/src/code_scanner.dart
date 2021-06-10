@@ -114,9 +114,19 @@ class CodeScannerController {
   Stream<String> get readDataStream => _readDataStreamController.stream;
 
   void dispose() {
+    this.stopScan();
     _scanDataStreamController.close();
     _isSuccessReadDataStreamController.close();
     _readDataStreamController.close();
+  }
+
+  /// Stop scan code.
+  Future<void> stopScan() async {
+    try {
+      await _channel.invokeMethod('stopScan');
+    } on PlatformException catch (e) {
+      throw CodeScannerException(e.code, e.message);
+    }
   }
 
   /// turn on light
