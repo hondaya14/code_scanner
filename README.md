@@ -1,5 +1,5 @@
 # code_scanner
-[![pub](https://img.shields.io/badge/pub-v0.0.2-blue)](https://pub.dev/packages/code_scanner)
+[![pub](https://img.shields.io/badge/pub-v0.0.3-blue)](https://pub.dev/packages/code_scanner)
 
 QR code scanner plugin for flutter. This plugin responds to camera/photo-lirary usage permission requests.
 This plugin function is Scan/Read. "Scan" is scanning QR code by scanner, "Read" is reading qr code by picking up qr code image from photo library.
