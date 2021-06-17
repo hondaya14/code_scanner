@@ -63,6 +63,8 @@ class _CodeScannerExampleState extends State<CodeScannerExample> {
         children: [
           CodeScanner(
             controller: controller,
+            isScanFrame: true,
+            frameColor: Color(0xcc222222),
           ),
           Container(
             margin: const EdgeInsets.only(bottom: 500),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:code_scanner/src/component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -9,35 +10,74 @@ import 'exception.dart';
 class CodeScanner extends StatefulWidget {
   const CodeScanner({
     @required this.controller,
+    this.isScanFrame = false,
+    this.scanFrameSize,
+    this.frameWidth = 8,
+    this.frameColor = const Color(0xffffffff),
   });
 
   /// CodeScanner needs [CodeScannerController] instance.
   final CodeScannerController controller;
 
+  /// scan frame
+  final bool isScanFrame;
+
+  /// Scan frame
+  final Size scanFrameSize;
+
+  /// frame width
+  final double frameWidth;
+
+  /// frame color
+  final Color frameColor;
+
   @override
   State<StatefulWidget> createState() => _CodeScannerState();
 }
 
-///
 class _CodeScannerState extends State<CodeScanner> {
   static const MethodChannel _channel = const MethodChannel('code_scanner');
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.75;
+    final Size defaultSize = Size(width, width);
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return AndroidView(
-          viewType: 'code_scanner_view',
-          onPlatformViewCreated: startScan,
-          creationParams: {},
-          creationParamsCodec: const StandardMessageCodec(),
+        return Stack(
+          children: [
+            AndroidView(
+              viewType: 'code_scanner_view',
+              onPlatformViewCreated: startScan,
+              creationParams: {},
+              creationParamsCodec: const StandardMessageCodec(),
+            ),
+            widget.isScanFrame
+                ? Components.defaultScanBorder(
+                    widget.scanFrameSize ?? defaultSize,
+                    widget.frameColor,
+                    widget.frameWidth,
+                  )
+                : Container(),
+          ],
         );
       case TargetPlatform.iOS:
-        return UiKitView(
-          viewType: 'code_scanner_view',
-          onPlatformViewCreated: startScan,
-          creationParams: {},
-          creationParamsCodec: const StandardMessageCodec(),
+        return Stack(
+          children: [
+            UiKitView(
+              viewType: 'code_scanner_view',
+              onPlatformViewCreated: startScan,
+              creationParams: {},
+              creationParamsCodec: const StandardMessageCodec(),
+            ),
+            widget.isScanFrame
+                ? Components.defaultScanBorder(
+                    widget.scanFrameSize ?? defaultSize,
+                    widget.frameColor,
+                    widget.frameWidth,
+                  )
+                : Container(),
+          ],
         );
       default:
         throw UnsupportedError('Unsupport platform');
