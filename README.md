@@ -41,7 +41,11 @@ Android:  [zxing-android-embedded](https://github.com/journeyapps/zxing-android-
 ```dart
 /// Scan Widget
 CodeScanner(
-  controller: controller,
+  controller : controller,
+  isScanFrame : true, // optional
+  scanFrameSize : Size(200, 200), // optional
+  frameWidth : 8, // optional
+  frameColor : Color(0xcc222222), // optional
 )
 
 /// Widget Controller
@@ -49,7 +53,7 @@ controller = CodeScannerController();
 ```
 ## How to get scan/read data
 ### How to get scan data
-Listern for scanDataStream.
+Listen for scanDataStream.
 ```dart
 /// scan data
 controller.scanDataStream
