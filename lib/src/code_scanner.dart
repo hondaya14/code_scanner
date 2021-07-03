@@ -9,7 +9,7 @@ import 'exception.dart';
 
 class CodeScanner extends StatefulWidget {
   const CodeScanner({
-    @required this.controller,
+    required this.controller,
     this.isScanFrame = false,
     this.scanFrameSize,
     this.frameWidth = 8,
@@ -23,7 +23,7 @@ class CodeScanner extends StatefulWidget {
   final bool isScanFrame;
 
   /// Scan frame
-  final Size scanFrameSize;
+  final Size? scanFrameSize;
 
   /// frame width
   final double frameWidth;
