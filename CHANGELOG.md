@@ -1,3 +1,8 @@
+## 1.0.0
+
+* Null-Safety
+* moved "startScan" to controller method.
+
 ## 0.0.3
 
 * Implement scan frame
