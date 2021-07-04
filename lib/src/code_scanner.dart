@@ -36,8 +36,6 @@ class CodeScanner extends StatefulWidget {
 }
 
 class _CodeScannerState extends State<CodeScanner> {
-  static const MethodChannel _channel = const MethodChannel('code_scanner');
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width * 0.75;
@@ -48,7 +46,7 @@ class _CodeScannerState extends State<CodeScanner> {
           children: [
             AndroidView(
               viewType: 'code_scanner_view',
-              onPlatformViewCreated: startScan,
+              onPlatformViewCreated: _onPlatformViewCreated,
               creationParams: {},
               creationParamsCodec: const StandardMessageCodec(),
             ),
@@ -66,7 +64,7 @@ class _CodeScannerState extends State<CodeScanner> {
           children: [
             UiKitView(
               viewType: 'code_scanner_view',
-              onPlatformViewCreated: startScan,
+              onPlatformViewCreated: _onPlatformViewCreated,
               creationParams: {},
               creationParamsCodec: const StandardMessageCodec(),
             ),
@@ -80,27 +78,27 @@ class _CodeScannerState extends State<CodeScanner> {
           ],
         );
       default:
-        throw UnsupportedError('Unsupport platform');
+        throw UnsupportedError('Unsupported platform');
     }
   }
 
-  /// Start scan code.
-  /// This method is called automatically when Platform View Created.
-  Future<void> startScan(int id) async {
-    try {
-      await _channel.invokeMethod('startScan');
-    } on PlatformException catch (e) {
-      throw CodeScannerException(e.code, e.message);
-    }
+  void _onPlatformViewCreated(int id) {
+    widget.controller.channel = const MethodChannel('code_scanner');
+    widget.controller
+      ..prepareSetMethodHandler()
+      ..startScan();
   }
 }
 
 /// Controller of [CodeScanner].
 /// manage screen([CodeScanner]) state by calling method from instance of [CodeScannerController].
 class CodeScannerController {
-  static const MethodChannel _channel = const MethodChannel('code_scanner');
-  CodeScannerController() {
-    _channel.setMethodCallHandler(
+  MethodChannel? channel;
+
+  CodeScannerController();
+
+  void prepareSetMethodHandler() {
+    this.channel?.setMethodCallHandler(
       (call) async {
         switch (call.method) {
           case 'receiveScanData':
@@ -160,10 +158,19 @@ class CodeScannerController {
     _readDataStreamController.close();
   }
 
+  /// Start scan code.
+  Future<void> startScan() async {
+    try {
+      await channel?.invokeMethod('startScan');
+    } on PlatformException catch (e) {
+      throw CodeScannerException(e.code, e.message);
+    }
+  }
+
   /// Stop scan code.
   Future<void> stopScan() async {
     try {
-      await _channel.invokeMethod('stopScan');
+      await channel?.invokeMethod('stopScan');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }
@@ -172,7 +179,7 @@ class CodeScannerController {
   /// turn on light
   Future<void> lightON() async {
     try {
-      await _channel.invokeMethod('turnOnLight');
+      await channel?.invokeMethod('turnOnLight');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }
@@ -181,7 +188,7 @@ class CodeScannerController {
   /// turn off light
   Future<void> lightOFF() async {
     try {
-      await _channel.invokeMethod('turnOffLight');
+      await channel?.invokeMethod('turnOffLight');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }
@@ -191,7 +198,7 @@ class CodeScannerController {
   /// when light is turning on, then turn off light vice versa.
   Future<void> toggleLight() async {
     try {
-      await _channel.invokeMethod('toggleLight');
+      await channel?.invokeMethod('toggleLight');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }
@@ -199,7 +206,7 @@ class CodeScannerController {
 
   Future<void> readDataFromGallery() async {
     try {
-      await _channel.invokeMethod('readDataFromGallery');
+      await channel?.invokeMethod('readDataFromGallery');
     } on PlatformException catch (e) {
       throw CodeScannerException(e.code, e.message);
     }
