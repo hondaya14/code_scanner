@@ -8,7 +8,7 @@ import io.flutter.plugin.platform.PlatformViewFactory
 
 class CodeScannerFactory (private val messenger: BinaryMessenger): PlatformViewFactory(StandardMessageCodec.INSTANCE){
 
-    override fun create(context: Context?, viewId: Int, args: Any): PlatformView {
+    override fun create(context: Context?, viewId: Int, args: Any?): PlatformView {
         val argument = args as HashMap<String, Any>
         return CodeScannerView(messenger, argument)
     }
