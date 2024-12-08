@@ -1,3 +1,6 @@
+> [!WARNING]
+> # [ This is not under maintainance. ]
+
 # code_scanner
 [![pub](https://img.shields.io/badge/pub-v1.0.0-blue)](https://pub.dev/packages/code_scanner)
 
